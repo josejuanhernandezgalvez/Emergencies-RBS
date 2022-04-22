@@ -1,31 +1,38 @@
-(deftemplate problem
+(deftemplate PR
 	(slot zone (type INTEGER))
-	(slot type (type STRING))
+	(slot type (type INTEGER))
 	(slot people (type INTEGER))
-	(slot state (type STRING))
-	(slot danger (type STRING))
+	(slot guns (type INTEGER))
 )
 
-(defrule create_problem
-    (not (esists problem))
-    (problem (type ?t) (zone ?z))
+(defrule fire_alert
+    (declare (salience 1000))
+    (PR (zone ?z) (type 3) (people ?p))
     =>
-    (assert (esits problem ?t))
+    (assert (Alpha Danger in sector ?z with ?p people injured))
 )
 
-
-(defrule send_troops
-    (esists problem)
-    (problem (type ?t) (zone ?z))
+(defrule injured_alert
+    (PR (zone ?z) (type 2) (people ?p))
     =>
-    (assert (send troops to zone ?z the problem is ?t))
+    (assert (Accident Danger in sector ?z with ?p people injured))
 )
 
-
-(defrule send_troops
-    (esists problem)
-    (problem (type ?t) (zone ?z))
+(defrule heist_alert
+    (PR (zone ?z) (type 1) (people ?p))
     =>
-    (assert (send troops to zone ?z the problem is ?t))
+    (assert (Heist Danger in sector ?z with ?p people in danger))
 )
 
+(defrule there_are_guns
+    (PR (guns 1)(type 1)(zone ?z))
+    =>
+    (assert (Robbers armed be precautious))
+)
+
+(defrule injured_people
+    (PR (type ?t) (people ?p))
+    (test (> ?t 1))
+    =>
+    (assert (Ambulances needed: (+ 1 (div ?p 10))))
+)
