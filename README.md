@@ -25,4 +25,6 @@ This repository contains a CLIPS code for handling incidents in a certain zone, 
 
 This code provides a simple solution for handling incidents in a certain zone. The code defines 8 rules for determining the necessary response in case of an incident, ensuring a prompt and efficient response.
 
+(c) 2022 José Juan Hernández Gálvez
+
 
